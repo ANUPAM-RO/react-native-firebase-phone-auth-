@@ -21,13 +21,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+        "googleServicesFile": "./google-services.json",
+      "package": "com.anupam420.phoneAuthNative"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-      "plugins": [
+    "plugins": [
       "@react-native-firebase/app"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "127563eb-86dc-4ec7-8e0d-dcc1da36d088"
+      }
+    }
   }
 }
