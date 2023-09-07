@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505291103111",
+    "firebase_url": "https://react-routing-4b6cb-default-rtdb.firebaseio.com",
+    "project_id": "react-routing-4b6cb",
+    "storage_bucket": "react-routing-4b6cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505291103111:android:c16fe7eb69bc4aa92c1122",
+        "android_client_info": {
+          "package_name": "com.anupam420.docdoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505291103111-nce182ui52ilo0nj1dfcicrtjv53754m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRwrtglgX7nmmkQEhmHZCyZwxY_UQtrnM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505291103111-nce182ui52ilo0nj1dfcicrtjv53754m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
