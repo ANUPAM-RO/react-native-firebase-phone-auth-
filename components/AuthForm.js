@@ -14,8 +14,20 @@ import PhoneInput from "react-native-phone-number-input/lib";
 import { TouchableOpacity } from "react-native";
 
 const AuthForm = ({ isLogin = false, navigation }) => {
-  const { userDetailsTemp, handleUpdate, registerUser, recaptchaRef } =
-    useHandleUserData(isLogin, navigation);
+  const {
+    userDetailsTemp,
+    handleUpdate,
+    registerUser,
+    setVerificationId,
+    setAppVerifier,
+
+    verificationId,
+    verificationCode,
+    setVerificationCode,
+    handleVerifyCode,
+    resendOtp,
+    recaptchaRef,
+  } = useHandleUserData(isLogin, navigation);
   return (
     <View style={styles.container}>
       <FirebaseRecaptchaVerifierModal
@@ -24,70 +36,122 @@ const AuthForm = ({ isLogin = false, navigation }) => {
         style={{ opacity: 0 }}
         // attemptInvisibleVerification={true}
       />
-      {isLogin ? (
-        <Text style={styles.text}>Log In</Text>
-      ) : (
-        <Text style={styles.text}>Create your Account </Text>
-      )}
-      <View style={styles.loginForm}>
-        {!isLogin && (
-          <>
-            <TextInput
-              style={styles.input}
-              name="firstName"
-              value={userDetailsTemp?.firstName}
-              placeholder="First Name"
-              onChangeText={(value) => handleUpdate({ firstName: value })}
-            />
-            <TextInput
-              style={styles.input}
-              name="lastName"
-              value={userDetailsTemp?.lastName}
-              placeholder="Last Name"
-              onChangeText={(value) => handleUpdate({ lastName: value })}
-            />
-            <TextInput
-              style={styles.input}
-              name="email"
-              value={userDetailsTemp?.email}
-              placeholder="Email Id"
-              onChangeText={(value) => handleUpdate({ email: value })}
-            />
-          </>
-        )}
-        <PhoneInput
-          textContainerStyle={styles.input}
-          containerStyle={styles.phoneInput}
-          value={userDetailsTemp?.phone}
-          defaultCode="IN"
-          layout="first"
-          onChangeFormattedText={(value) => handleUpdate({ phone: value })}
-          withShadow
-          autoFocus
-        />
+      {!!verificationId ? (
+        <>
+          <View style={styles}>
+            <Text style={styles.otp}>
+              Enter <Text style={styles}>OTP</Text>
+            </Text>
+          </View>
 
-        <Button
-          title={!isLogin ? "Sign Up" : "Login"}
-          onPress={(e) => {
-            e.preventDefault();
-            registerUser();
-          }}
-        ></Button>
-      </View>
-      {isLogin ? (
-        <View style={styles.text1}>
-          <Text>Don&apos;t have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text style={styles.text2}>REGISTER HERE</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles}>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              name="otp"
+              value={verificationCode}
+              placeholder="OTP"
+              autoComplete="sms-otp" // android
+              textContentType="oneTimeCode" // ios
+              onChangeText={(number) => setVerificationCode(number)}
+            />
+
+            <View style={styles.resendEdit}>
+              <Pressable onPress={resendOtp}>
+                <Text style={styles.text3}> Resend OTP </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
+                  setAppVerifier(null);
+                  setVerificationId(null);
+                }}
+              >
+                <Text style={styles.text3}>Edit Details</Text>
+              </Pressable>
+            </View>
+            {/* 
+            <p>
+              <u onPress={setVerificationId(null)}>Edit Details</u>
+            </p> */}
+
+            <Button
+              title=" Verify"
+              onPress={(e) => {
+                e.preventDefault();
+                handleVerifyCode();
+              }}
+            ></Button>
+          </View>
+        </>
       ) : (
-        <View style={styles.text1}>
-          <Text>Already have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.text2}>LOGIN</Text>
-          </TouchableOpacity>
-        </View>
+        <>
+          {isLogin ? (
+            <Text style={styles.text}>Log In</Text>
+          ) : (
+            <Text style={styles.text}>Create your Account </Text>
+          )}
+          <View style={styles.loginForm}>
+            {!isLogin && (
+              <>
+                <TextInput
+                  style={styles.input}
+                  name="firstName"
+                  value={userDetailsTemp?.firstName}
+                  placeholder="First Name"
+                  onChangeText={(value) => handleUpdate({ firstName: value })}
+                />
+                <TextInput
+                  style={styles.input}
+                  name="lastName"
+                  value={userDetailsTemp?.lastName}
+                  placeholder="Last Name"
+                  onChangeText={(value) => handleUpdate({ lastName: value })}
+                />
+                <TextInput
+                  style={styles.input}
+                  name="email"
+                  value={userDetailsTemp?.email}
+                  placeholder="Email Id"
+                  onChangeText={(value) => handleUpdate({ email: value })}
+                />
+              </>
+            )}
+            <PhoneInput
+              textContainerStyle={styles.input}
+              containerStyle={styles.phoneInput}
+              value={userDetailsTemp?.phone}
+              defaultCode="IN"
+              layout="first"
+              onChangeFormattedText={(value) => handleUpdate({ phone: value })}
+              withShadow
+              autoFocus
+            />
+
+            <Button
+              title={!isLogin ? "Sign Up" : "Login"}
+              onPress={(e) => {
+                e.preventDefault();
+                registerUser();
+              }}
+            ></Button>
+          </View>
+          {isLogin ? (
+            <View style={styles.text1}>
+              <Text>Don&apos;t have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                <Text style={styles.text2}>REGISTER HERE</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.text1}>
+              <Text>Already have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text style={styles.text2}>LOGIN</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </>
       )}
     </View>
   );

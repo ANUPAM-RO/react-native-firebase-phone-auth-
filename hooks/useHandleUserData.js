@@ -197,7 +197,7 @@ export default function useHandleUserData(isLogin = false, navigation) {
           });
         }
 
-        if (!!userCredential) navigation.navigate("menu");
+        if (!!userCredential) navigation.navigate("Menu");
         setIsLoading(false);
         setUserDetails(getUserObject(userObj));
       })
